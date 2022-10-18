@@ -65,7 +65,7 @@ class OneLoginBuilder
             OneLoginUtils::setProxyVars(true);
         }
 
-        $this->app->scoped('OneLogin_Saml2_Auth', function ($app) {
+        $this->app->bind('OneLogin_Saml2_Auth', function ($app) {
             $config = $app['config']['saml2'];
 
             $this->setConfigDefaultValues($config);
@@ -83,7 +83,7 @@ class OneLoginBuilder
             return new OneLoginAuth($oneLoginConfig);
         });
 
-        $this->app->scoped('Slides\Saml2\Auth', function ($app) {
+        $this->app->bind('Slides\Saml2\Auth', function ($app) {
             return new \Slides\Saml2\Auth($app['OneLogin_Saml2_Auth'], $this->tenant);
         });
     }
