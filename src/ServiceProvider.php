@@ -49,9 +49,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function bootPublishes()
     {
-        $this->publishes([
-            __DIR__ . '/../config/saml2.php' => config_path('saml2.php'),
-        ]);
+        $source = __DIR__ . '/../config/saml2.php';
+
+        $this->publishes([$source => config_path('saml2.php')]);
+        $this->mergeConfigFrom($source, 'saml2');
     }
 
     /**
@@ -88,7 +89,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     protected function loadMigrations()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        if (config('saml2.load_migrations', true)) {
+            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        }
     }
 
     /**
